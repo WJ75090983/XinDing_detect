@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+#判断点是否在图像中，如果在，则返回true,否则返回false
 def Inside_point(Pt, img):
     height, width = img.shape[:2]
     if Pt[0] < 0 or Pt[0] >= width or Pt[1] < 0 or Pt[1] >= height:
@@ -8,6 +9,7 @@ def Inside_point(Pt, img):
     else:
         return True
 
+#按顺时针顺序，从左上角开始，依次生成九邻域像素点，并在水平方向上作梯度相减
 def gen_data_hen(Pt, img, distance):
     points_value = []
     p9_x = int(Pt[0])
@@ -40,6 +42,7 @@ def gen_data_hen(Pt, img, distance):
 
     return points_value
 
+#按顺时针顺序，从左上角开始，依次生成九邻域像素点，并在竖直方向上作梯度相减
 def gen_data_shu(Pt, img, distance):
     points_value = []
     p9_x = int(Pt[0])
@@ -72,9 +75,10 @@ def gen_data_shu(Pt, img, distance):
 
     return points_value
 
+#获取一条线段上离散点的梯度均值
 def getLindDiff(line, state, img, thresh, distance):
     [x1, y1, x2, y2] = line[0]
-    series_points = np.linspace((x1, y1), (x2, y2), 10, endpoint=False)
+    series_points = np.linspace((x1, y1), (x2, y2), 10, endpoint=False)   #生成离散点，数量为10
     if state == "shu_xian":
         points_Diss = []
         for point in series_points:
